@@ -1,21 +1,48 @@
 package com.andson.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import com.andson.helpdesk.domain.enums.Prioridade;
 import com.andson.helpdesk.domain.enums.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class Chamado {
+@Entity
+public class Chamado implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id //informando a geração da chave primaria é o banco, cada objeto um id diferente
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Integer id;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy") //informando a maneira como será a data
 	private LocalDate dataAbertura = LocalDate.now();
+	@JsonFormat(pattern = "dd/MM/yyyy") //informando a maneira como será a data
 	private LocalDate dataFechamento;
+	
 	private Prioridade prioridade;
 	private Status status;
 	private String titulo;
 	private String observacoes;
+	
+	@ManyToOne //dizendo o tipo de relação - Muitos para Um
+	@JoinColumn(name = "tecnico_id") //relacionado o campo
 	private Tecnico tecnico;
+	
+	@ManyToOne //dizendo o tipo de relação - Muitos para Um
+	@JoinColumn(name = "cliente_id") //relacionado o campo
 	private Cliente cliente;
 	
 	

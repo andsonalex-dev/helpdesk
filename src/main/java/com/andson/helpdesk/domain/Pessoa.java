@@ -3,20 +3,55 @@ package com.andson.helpdesk.domain;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.andson.helpdesk.domain.enums.Perfil;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+import com.andson.helpdesk.domain.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 
-public abstract class Pessoa {
+/**
+ * 
+ * @author andson
+ * @Class Pessoa
+ */
+//Informando que é uma entidade no banco de dados com @Entity
+
+@Entity
+public abstract class Pessoa implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Id //informando a geração da chave primaria é o banco, cada objeto um id diferente
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	protected Integer id;
 	protected String nome;
+	
+	@Column(unique = true) //informando que a coluna cpf é única no banco
 	protected String cpf;
+	
+	@Column(unique = true) //email também é um valor único
 	protected String email;
 	protected String senha;
+	
+	@ElementCollection(fetch = FetchType.EAGER) //coleção de elementos do tipo integer, a lista irá retornar o usuário com a lista de perfis
+	@CollectionTable(name = "PERFIS") //informando que terá uma tabela com nome PERFIS
 	protected Set<Integer> perfis = new HashSet<>();
+	
+	@JsonFormat(pattern = "dd/MM/yyyy") //informando a maneira como será a data
 	protected LocalDate dataCriacao = LocalDate.now();
 	
 	public Pessoa() {
