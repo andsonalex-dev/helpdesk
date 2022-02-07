@@ -12,7 +12,7 @@ import com.andson.helpdesk.services.DBService;
 @Profile("dev")
 public class DevConfig {
 /**
- * Classe de testes com a anotação de configuração e profile de teste
+ * Classe de dev com a anotação de configuração e profile de teste
  * 
  *
  */
